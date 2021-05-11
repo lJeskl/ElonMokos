@@ -2,10 +2,10 @@ import React from 'react';
 import './Cards.css';
 import CardItem from './CardItem';
 
-function Cards() {
+function Cards(props) {
   return (
     <div className='cards'>
-      <h1>Check out these EPIC Destinations!</h1>
+      <h1>{props.name}</h1>
       <div className='cards__container'>
         <div className='cards__wrapper'>
           <ul className='cards__items'>
@@ -33,7 +33,7 @@ function Cards() {
               src='images/img-4.jpg'
               text='Experience Football on Top of the Himilayan Mountains'
               label='Adventure'
-              path='/products'
+              path='/services'
             />
             <CardItem
               src='images/img-8.jpg'

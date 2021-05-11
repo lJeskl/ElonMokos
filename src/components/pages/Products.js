@@ -1,6 +1,13 @@
 import React from 'react';
+import Cards from '../Cards';
 import '../../App.css';
+import Footer from '../Footer';
 
 export default function Products() {
-  return <h1 className='products'>PRODUCTS</h1>;
+  return (
+    <>
+      <Cards name='Categorías'/>
+      <Footer/>
+    </>
+  );
 }
