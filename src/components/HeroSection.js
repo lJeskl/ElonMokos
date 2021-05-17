@@ -1,6 +1,7 @@
 import React from 'react';
 import '../App.css';
 import { Button } from './Button';
+import './Google-login-button.css'
 import './HeroSection.css';
 
 function HeroSection() {
@@ -8,14 +9,12 @@ function HeroSection() {
     <div className='hero-container'>
       <video src='/videos/videobackground.mp4' autoPlay loop muted />
       <div className='hero-btns'>
-        <Button
-          className='btns'
-          buttonStyle='btn--outline'
-          buttonSize='btn--large'
-          buttonPath='/products'
+        <button
+          className='Google-login-button'
+          buttonpath='/products'
         >
           Nuestro Menú   
-        </Button>
+        </button>
       </div>
     </div>
   );
