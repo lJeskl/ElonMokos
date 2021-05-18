@@ -14,6 +14,19 @@ return(
 )
 }
 
+export const getProducts = (url) => {
+
+    console.log(url);
+    return(
+        axios.get(`https://ds2project.herokuapp.com/producto/?categoria=${url}` )
+        .then(res => {
+        return res;
+        }).catch(err=>{
+            console.log(err);
+        })
+    )
+    }
+
 export const getUsuarios = () => {
     return(
         axios.get('https://ds2project.herokuapp.com/usuario')

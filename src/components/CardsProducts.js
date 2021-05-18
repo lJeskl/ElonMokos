@@ -3,17 +3,23 @@ import './Cards.css';
 import CardItem from './CardItem';
 import { Container, Row, Col } from 'reactstrap';
 import {getCategoria} from '../ApiCore'
+import { useLocation } from "react-router-dom";
 
 
 
-function Cards(props) {
+function CardsProducts(props) {
+
+    let AuxListName=useLocation();
+    
 
     useEffect(()=>{
-        props.setNameLista('Categorías');
-        props.getCards({cardtype: 'categoria'})       
+        props.setNameLista(AuxListName.value);
+        props.getCards({productName : AuxListName.value});       
     },[])
 
-    console.log(props.cards)
+    console.log(AuxListName.value);
+
+    //console.log(prueba.value)
 
     return (
         <div className='cards'>
@@ -28,4 +34,4 @@ function Cards(props) {
     )
 }
 
-export default Cards;
+export default CardsProducts

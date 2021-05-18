@@ -2,7 +2,7 @@ import React, {useEffect,useState} from 'react';
 import './Cards.css';
 import CardItem from './CardItem';
 import { Container, Row, Col } from 'reactstrap';
-import {getCategoria} from '../ApiCore'
+import {getCategoria, getProducts} from '../ApiCore'
 
 
 
@@ -20,12 +20,21 @@ function CardsWrapper(props) {
         setcardKey(cardKey + 1);
     }
 
-    const getCards = async () => {
+    const getCards = async ({cardtype, productName}) => {
+      if(cardtype=='categoria'){
       let response = await getCategoria();
       console.log('Hola')
       setCards(response.data);
       console.log(cards)
       return response;
+      }else{
+        console.log('Hey')
+        let response = await getProducts(productName);
+        
+        setCards(response.data);
+        console.log(cards)
+        return response;
+      }
     };
 
     let categoriaCard=cards.map(({nombre, imagen, descripcion})=>(
@@ -35,8 +44,8 @@ function CardsWrapper(props) {
             src={imagen}
             text={descripcion}
             label={nombre}
-            keyy={incKey}
-          path='/services'
+            keyy={nombre}
+          path={'/' + nombre}
         />
         <br/>
         </Col>
