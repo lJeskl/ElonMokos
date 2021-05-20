@@ -1,7 +1,7 @@
-import React, {useEffect,useState} from 'react';
+import React, {useState} from 'react';
 import './Cards.css';
 import CardItem from './CardItem';
-import { Container, Row, Col } from 'reactstrap';
+import { Col } from 'reactstrap';
 import {getCategoria, getProducts} from '../ApiCore'
 
 
@@ -10,42 +10,35 @@ function CardsWrapper(props) {
 
     const [cards, setCards]= useState([]);
     const [cardListName, setCardListName] = useState('');
-    const [cardKey, setcardKey] = useState(0);
 
     const setNameLista = (nombre) =>{
         setCardListName(nombre);
     };
 
-    const incKey = () =>{
-        setcardKey(cardKey + 1);
-    }
+    const [urlid,seturlid]=useState("");
+    const setrutaid = ()=>(seturlid(props.match.params.cardListName));
 
-    const getCards = async ({cardtype, productName}) => {
+    const getCards = async ({cardtype}) => {
       if(cardtype=='categoria'){
       let response = await getCategoria();
-      console.log('Hola')
       setCards(response.data);
-      console.log(cards)
       return response;
       }else{
-        console.log('Hey')
-        let response = await getProducts(productName);
-        
+        let response = await getProducts(props.match.params.cardListName);
         setCards(response.data);
-        console.log(cards)
         return response;
       }
     };
 
-    let categoriaCard=cards.map(({nombre, imagen, descripcion})=>(
+    let categoriaCard=cards.map((card)=>(
             
         <Col sm="4">
-          <CardItem
-            src={imagen}
-            text={descripcion}
-            label={nombre}
-            keyy={nombre}
-          path={'/' + nombre}
+          <CardItem 
+            src={card.imagen}
+            text={card.descripcion}
+            label={card.nombre}
+            keyy={card.nombre}
+          path={'/productos/' + card.nombre}
         />
         <br/>
         </Col>
@@ -53,7 +46,7 @@ function CardsWrapper(props) {
 
     return (
         <div>
-            {props.render(cards, getCards, categoriaCard, cardListName, setNameLista)}
+            {props.render(cards, getCards, categoriaCard, cardListName, setNameLista, urlid, setrutaid)}
         </div>
     );
 }

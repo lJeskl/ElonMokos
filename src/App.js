@@ -24,15 +24,9 @@ function App() {
           <Route path='/sign-up' component={SignIn} />
           <Route path='/login' component={Login} />
           <Route path='/menu1' component={Menu1} />
-          <Route path='/Desayunos'>
-          <CardsWrapper render={(cards, getCards, categoriaCard,cardListName, setNameLista)=>{
-                return <CardsProducts cards={cards} getCards={getCards} categoriaCard={categoriaCard} cardListName={cardListName} setNameLista={setNameLista}/>
-            }}/>
-          </Route>
-          <Route path='/Almuerzos'>
-          <CardsWrapper render={(cards, getCards, categoriaCard,cardListName, setNameLista)=>{
-                return <CardsProducts cards={cards} getCards={getCards} categoriaCard={categoriaCard} cardListName={cardListName} setNameLista={setNameLista}/>
-            }}/>
+          <Route path='/productos/:cardListName' render={({match})=>(<CardsWrapper match={match} render={(cards, getCards, categoriaCard,cardListName, setNameLista, urlid,setrutaid, currentpath, setcurrentpath)=>{
+                return <CardsProducts cards={cards} getCards={getCards} categoriaCard={categoriaCard} cardListName={cardListName} setNameLista={setNameLista} urlid={urlid} setrutaid={setrutaid} currentpath={currentpath} setcurrentpath={setcurrentpath}/>
+            }}/>)}>
           </Route>
         </Switch>
       </Router>

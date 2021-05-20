@@ -1,13 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardImg, CardText, CardBlock,
-  CardTitle, CardSubtitle, Button, CardBody } from 'reactstrap';
+import { Card, CardImg, CardBody } from 'reactstrap';
 
 function CardItem(props) {
   return (
     <div>
       <Card className='cards__item' key={props.keyy}>
-        <Link className='cards__item__link' to={{pathname: props.path, value: props.label}}>
+        <Link className='cards__item__link'  to={{pathname: props.path, value: props.label} }>
           <figure className='cards__item__pic-wrap' data-category={props.label}>
             <CardImg
               className='cards__item__img'

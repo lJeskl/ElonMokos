@@ -14,7 +14,7 @@ function CardsProducts(props) {
 
     useEffect(()=>{
         props.setNameLista(AuxListName.value);
-        props.getCards({productName : AuxListName.value});       
+        props.getCards({productName : AuxListName.value});     
     },[])
 
     console.log(AuxListName.value);
