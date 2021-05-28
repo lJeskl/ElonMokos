@@ -1,21 +1,49 @@
 import React from 'react';
-import CardsCategorias from '../CardsCategorias';
-import '../../App.css';
+import { useRouteMatch, useParams } from 'react-router';
 import Footer from '../Footer';
-import CardsWrapper from '../CardsWrapper'
-import Menu1 from './Menu1'
-import services from './Services'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import CardsWrapper from '../CardsWrapper';
+import CardsProducts from '../CardsProducts';
 
-export default function Products() {
+function Products(props) {
+  const match = useRouteMatch();
+  const { cardListName } = useParams();
   return (
     <>
-
-      <CardsWrapper render={(cards, getCards, categoriaCard,cardListName, setNameLista)=>{
-                return <CardsCategorias cards={cards} getCards={getCards} categoriaCard={categoriaCard} cardListName={cardListName} setNameLista={setNameLista}/>
-            }}/>
-      <Footer/>
- 
+      <CardsWrapper
+        match={match}
+        cardListName={cardListName}
+        render={(
+          cards,
+          getCards,
+          categoriaCard,
+          setNameLista,
+          setCardUrl,
+          url,
+          setUrl
+        ) => {
+          return (
+            <CardsProducts
+              cards={cards}
+              getCards={getCards}
+              categoriaCard={categoriaCard}
+              cardListName={cardListName}
+              setNameLista={setNameLista}
+              setCardUrl={setCardUrl}
+              url={url}
+              setUrl={setUrl}
+              handleLogin={props.handleLogIn}
+              handleLogOut={props.handleLogOut}
+              loggedInStatus={props.loggedInStatus}
+              setLoggedInStatus={props.setLoggedInStatus}
+              isAdmin={props.isAdmin}
+              setIsAdmin={props.setIsAdmin}
+            />
+          );
+        }}
+      />
+      <Footer />
     </>
   );
 }
+
+export default Products;

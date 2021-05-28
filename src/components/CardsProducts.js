@@ -1,37 +1,40 @@
-import React, {useEffect,useState} from 'react';
+import React, { useEffect } from 'react';
 import './Cards.css';
-import CardItem from './CardItem';
-import { Container, Row, Col } from 'reactstrap';
-import {getCategoria} from '../ApiCore'
-import { useLocation } from "react-router-dom";
-
-
+import { Link } from 'react-router-dom';
+import { Container, Row } from 'reactstrap';
+import { useRouteMatch } from 'react-router';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
 function CardsProducts(props) {
+  const { url } = useRouteMatch();
+  useEffect(() => {
+    props.getCards({});
+    props.setCardUrl(url);
+  }, []);
+  console.log(props.cardListName);
 
-    let AuxListName=useLocation();
-    
+  const addButton =
+    props.loggedInStatus && props.isAdmin ? (
+      <Fab className="add-button" color="primary" aria-label="add">
+        <AddIcon />
+      </Fab>
+    ) : (
+      <></>
+    );
 
-    useEffect(()=>{
-        props.setNameLista(AuxListName.value);
-        props.getCards({productName : AuxListName.value});     
-    },[])
-
-    console.log(AuxListName.value);
-
-    //console.log(prueba.value)
-
-    return (
-        <div className='cards'>
-            <h1>{props.cardListName}</h1>
-            <br/>
-            <Container >
-                <Row >
-                    {props.categoriaCard}
-                </Row>
-            </Container>
-        </div>
-    )
+  return (
+    <div className="cards">
+      <h1>{props.cardListName}</h1>
+      <br />
+      <Link to={`${url}/addProduct`}> {addButton}</Link>
+      <br />
+      <br />
+      <Container>
+        <Row>{props.categoriaCard}</Row>
+      </Container>
+    </div>
+  );
 }
 
-export default CardsProducts
+export default CardsProducts;

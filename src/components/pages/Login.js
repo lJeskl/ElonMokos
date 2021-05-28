@@ -1,60 +1,86 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../App.css';
-import GoogleLogin from 'react-google-login'
-import '../Google-login-button.css'
+import '../Google-login-button.css';
 import axios from 'axios';
-import {getUsuarios} from '../../ApiCore'
-import { Usb } from '@material-ui/icons';
+import { addUser, checkLogin, getUsuarios } from '../../ApiCore';
+import { GoogleLogout, GoogleLogin } from 'react-google-login';
 
-export default function Login() {
+export default function Login(props) {
+  const [token, setToken] = useState('');
+  const [users, setUsers] = useState([]);
+  const [user, setUser] = useState({});
 
-    const [token, setToken] = useState("");
-    const [users, setUsers] = useState([]);
+  const respuestaGoogle = async (respuesta) => {
+    setToken(respuesta.tokenId);
+    setUser(respuesta.profileObj);
 
-    const respuestaGoogle= (respuesta) => {
-        setToken(respuesta.tokenId);     
-        const data={
-            tokenId:respuesta.tokenId
-        }
-        axios.post(`https://ds2project.herokuapp.com/login`,  data )
-        .then(res => {
-        console.log(data.tokenId);
-        console.log(res.data);
-      })   
+    const data = {
+      tokenId: respuesta.tokenId,
     };
-
-    const respuestaErrorGoogle= (respuesta) => {
-        console.log(respuesta);        
-    };
-
-    async function getUsers() {
-        let response = await getUsuarios();
-        setUsers(response.data);
-        return response;
+    let loggedin = await checkLogin(data);
+    console.log(loggedin);
+    if (loggedin.existe) {
+      console.log('Login Existoso!');
+      await props.setLoggedInStatus(true);
+      if (loggedin.admin) {
+        await props.setIsAdmin(true);
       }
+    } else {
+      console.log('El usuario no existe');
+    }
+  };
 
-    useEffect(()=>{
-        getUsers();
-    },[])
+  const respuestaErrorGoogle = (respuesta) => {
+    console.log(respuesta);
+  };
 
-    console.log(users);
+  const logout = () => {
+    props.handleLogOut();
+    console.log('Sesión cerrada');
+  };
 
-  return (
-  <>
-  
-    <GoogleLogin
-    clientId="440158364737-j5qip3if0rofol8hjhdickps76mg9j4b.apps.googleusercontent.com"
-    render={renderProps => (
-        <button className= 'Google-login-button' onClick={renderProps.onClick} disabled={renderProps.disabled}>Login</button>
-    )}
-    buttonText="Loginnn"
-    onSuccess={respuestaGoogle} 
-    onFailure={respuestaErrorGoogle}
-    isSignedIn={true}
-    cookiePolicy={'single_host_origin'}/>
-  </>
-  
+  async function getUsers() {
+    let response = await getUsuarios();
+    setUsers(response.data);
+    //console.log(response.data);
+    return response;
+  }
 
-  
-  );
+  const LoginLogoutButton =
+    props.loggedInStatus === true ? (
+      <GoogleLogout
+        clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+        buttonText="Logout"
+        onLogoutSuccess={logout}
+        render={(renderProps) => (
+          <button
+            className="Google-login-button"
+            onClick={renderProps.onClick}
+            disabled={renderProps.disabled}
+          >
+            Logout
+          </button>
+        )}
+      ></GoogleLogout>
+    ) : (
+      <GoogleLogin
+        clientId="440158364737-j5qip3if0rofol8hjhdickps76mg9j4b.apps.googleusercontent.com"
+        buttonText="Login"
+        onSuccess={respuestaGoogle}
+        onFailure={respuestaErrorGoogle}
+        isSignedIn={true}
+        cookiePolicy={'single_host_origin'}
+        render={(renderProps) => (
+          <button
+            className="Google-login-button"
+            onClick={renderProps.onClick}
+            disabled={renderProps.disabled}
+          >
+            Login
+          </button>
+        )}
+      />
+    );
+
+  return <>{LoginLogoutButton}</>;
 }

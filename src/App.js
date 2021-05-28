@@ -1,33 +1,82 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import './App.css';
 import Home from './components/pages/Home';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Services from './components/pages/Services';
+import Categorias from './components/pages/Categorias';
 import Products from './components/pages/Products';
 import SignIn from './components/pages/SignUp';
 import Login from './components/pages/Login';
-import Menu1 from './components/pages/Menu1'; 
-import CardsWrapper from './components/CardsWrapper'
-import CardsProducts from './components/CardsProducts';
-
+import InfoProduct from './components/InfoProduct';
+import AddProduct from './components/AddProduct';
 
 function App() {
+  const [loggedInStatus, setLoggedInStatus] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  const handleLogIn = () => {
+    setLoggedInStatus(true);
+    console.log('SIUUUUUU');
+  };
+  const handleLogOut = () => {
+    setLoggedInStatus(false);
+    setIsAdmin(false);
+  };
+
   return (
     <>
       <Router>
-        <Navbar />
+        <Navbar
+          handleLogin={handleLogIn}
+          handleLogOut={handleLogOut}
+          loggedInStatus={loggedInStatus}
+          setLoggedInStatus={setLoggedInStatus}
+          isAdmin={isAdmin}
+          setIsAdmin={setIsAdmin}
+        />
         <Switch>
-          <Route path='/' exact component={Home} />
-          <Route path='/services' component={Services} />
-          <Route path='/products' component={Products} />
-          <Route path='/sign-up' component={SignIn} />
-          <Route path='/login' component={Login} />
-          <Route path='/menu1' component={Menu1} />
-          <Route path='/productos/:cardListName' render={({match})=>(<CardsWrapper match={match} render={(cards, getCards, categoriaCard,cardListName, setNameLista, urlid,setrutaid, currentpath, setcurrentpath)=>{
-                return <CardsProducts cards={cards} getCards={getCards} categoriaCard={categoriaCard} cardListName={cardListName} setNameLista={setNameLista} urlid={urlid} setrutaid={setrutaid} currentpath={currentpath} setcurrentpath={setcurrentpath}/>
-            }}/>)}>
-          </Route>
+          <Route exact path="/" exact component={Home} />
+          <Route path="/services" component={Services} />
+          <Route exact path="/products" component={Categorias} />
+          <Route path="/sign-up" component={SignIn} />
+          <Route path="/login" component={Login} />
+          <Route path="/products/services" component={Services} />
+          <Route
+            exact
+            path="/products/:cardListName"
+            render={(props) => (
+              <Products
+                {...props}
+                handleLogin={handleLogIn}
+                handleLogOut={handleLogOut}
+                loggedInStatus={loggedInStatus}
+                setLoggedInStatus={setLoggedInStatus}
+                isAdmin={isAdmin}
+                setIsAdmin={setIsAdmin}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/products/:cardListName/addProduct"
+            render={(props) => (
+              <AddProduct
+                {...props}
+                handleLogin={handleLogIn}
+                handleLogOut={handleLogOut}
+                loggedInStatus={loggedInStatus}
+                setLoggedInStatus={setLoggedInStatus}
+                isAdmin={isAdmin}
+                setIsAdmin={setIsAdmin}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/products/:cardListName/:productName"
+            component={InfoProduct}
+          />
         </Switch>
       </Router>
     </>
