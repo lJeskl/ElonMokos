@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom';
 import { Button, Input, Col, Container, Row, ButtonToggle } from 'reactstrap';
 import { getDetalles, sendProduct } from '../ApiCore';
 import DatePicker from 'react-datepicker';
+import { MDBCloseIcon, MDB } from 'mdbreact';
 import 'react-datepicker/dist/react-datepicker.css';
+import './AddProduct.css';
 function AddProduct(props) {
   const [product, setProduct] = useState({
     productName: '',
+    codigo: '',
     descripcionProduct: '',
     urlimg: '',
     costoProduccion: '',
@@ -28,7 +31,7 @@ function AddProduct(props) {
   const [ingredientesList, setIngredientesList] = useState([]);
   const [acompanamientosList, setacompanamientosList] = useState([]);
   const [característicasImportantesList, setCaracterísticasImportantesList] =
-    useState({});
+    useState([]);
   const [renderDescuento, setRenderDescuento] = useState(false);
   const [renderIVA, setRenderIVA] = useState(false);
 
@@ -47,15 +50,22 @@ function AddProduct(props) {
 
       return res;
     };
-    Detalles('Ingredientes', product.ingrediente);
-    Detalles('Acompañamientos', product.acompanamiento);
-    Detalles('Caracteristicas importantes', product.caracteristica);
+    if (product.ingrediente !== '') {
+      Detalles('Ingredientes', product.ingrediente);
+    }
+    if (product.acompanamiento !== '') {
+      Detalles('Acompañamientos', product.acompanamiento);
+    }
+    if (product.caracteristica !== '') {
+      Detalles('Caracteristicas importantes', product.caracteristica);
+    }
   }, [product.ingrediente, product.acompanamiento, product.caracteristica]);
 
   console.log(característicasImportantesList);
 
   const handleSubmitOnChange = (event) => {
     console.log(event.target.value);
+
     setProduct({
       ...product,
       [event.target.name]: event.target.value,
@@ -64,14 +74,48 @@ function AddProduct(props) {
 
   const handlePressedEnter = (event) => {
     if (event.key === 'Enter') {
+      console.log(event.target.name);
+      console.log(event.target.value);
       console.log(':DDDDDDDDDD');
+      if (event.target.name === 'ingrediente') {
+        setProduct({
+          ...product,
+          ingredientes: [...product.ingredientes, event.target.value],
+        });
+      }
+      if (event.target.name === 'acompanamiento') {
+        setProduct({
+          ...product,
+          acompanamientos: [...product.acompanamientos, event.target.value],
+        });
+      }
+      if (event.target.name === 'caracteristica') {
+        setProduct({
+          ...product,
+          caracteristicas: [...product.caracteristicas, event.target.value],
+        });
+      }
     }
   };
 
-  const sendData = (event) => {
-    event.preventDefault();
-
-    sendProduct(product);
+  const sendData = () => {
+    const productFinal = {
+      productName: product.productName,
+      codigo: product.codigo,
+      descripcionProduct: product.descripcionProduct,
+      urlimg: product.urlimg,
+      costoProduccion: product.costoProduccion,
+      ganancia: product.ganancia,
+      ingredientes: product.ingredientes,
+      acompanamientos: product.acompanamientos,
+      caracteristicas: product.caracteristicas,
+      descuento: product.descuento,
+      fechaInicial: product.fechaInicial,
+      fechaFinal: product.fechaFinal,
+      stock: product.stock,
+      iva: product.iva,
+    };
+    sendProduct(productFinal);
   };
 
   const Descuento = renderDescuento ? (
@@ -191,7 +235,11 @@ function AddProduct(props) {
     if (tipoLista === 'ingredientes') {
       return product.ingredientes.map((ingrediente) => (
         <div>
-          {ingrediente}
+          <Button color="warning" className="mr-0">
+            {ingrediente}
+          </Button>
+          <MDBCloseIcon className="btn-close-icon" />
+
           <br />
         </div>
       ));
@@ -218,7 +266,7 @@ function AddProduct(props) {
   const addProductForm =
     props.loggedInStatus && props.isAdmin ? (
       <div>
-        <form onSubmit={sendData}>
+        <form onSubmit={(event) => event.preventDefault()}>
           <div className="form-group">
             <label>Product Name</label>
             <Input
@@ -233,6 +281,18 @@ function AddProduct(props) {
             <small id="emailHelp" className="form-text text-muted">
               We'll never share your email with anyone else.
             </small>
+          </div>
+          <div className="form-group">
+            <label>Codigo producto</label>
+            <Input
+              type="text"
+              className="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              placeholder="Ingrese el nombre del producto"
+              name="codigo"
+              onChange={handleSubmitOnChange}
+            />
           </div>
           <div className="form-group">
             <label>Descripción</label>
@@ -312,6 +372,7 @@ function AddProduct(props) {
               placeholder="Ingrese un acompanamiento"
               name="acompanamiento"
               onChange={handleSubmitOnChange}
+              onKeyDown={handlePressedEnter}
             />
           </div>
           <br />
@@ -331,6 +392,7 @@ function AddProduct(props) {
               placeholder="Ingrese un acompanamiento"
               name="caracteristica"
               onChange={handleSubmitOnChange}
+              onKeyDown={handlePressedEnter}
             />
           </div>
           <br />
@@ -377,7 +439,12 @@ function AddProduct(props) {
           <div>{IVA}</div>
           <br />
           <br />
-          <Button color="danger" type="submit" className="btn btn-primary">
+          <Button
+            color="danger"
+            type="submit"
+            className="btn btn-primary"
+            onClick={() => sendData()}
+          >
             Submit
           </Button>
         </form>

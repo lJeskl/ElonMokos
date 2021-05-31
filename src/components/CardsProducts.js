@@ -13,6 +13,7 @@ function CardsProducts(props) {
     props.setCardUrl(url);
   }, []);
   console.log(props.cardListName);
+  console.log(url);
 
   const addButton =
     props.loggedInStatus && props.isAdmin ? (

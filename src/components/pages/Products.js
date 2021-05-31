@@ -6,17 +6,16 @@ import CardsProducts from '../CardsProducts';
 
 function Products(props) {
   const match = useRouteMatch();
-  const { cardListName } = useParams();
   return (
     <>
       <CardsWrapper
         match={match}
-        cardListName={cardListName}
         render={(
           cards,
           getCards,
           categoriaCard,
           setNameLista,
+          cardListName,
           setCardUrl,
           url,
           setUrl

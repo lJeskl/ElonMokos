@@ -37,7 +37,7 @@ function CardsWrapper(props) {
         text={card.descripcion}
         label={card.nombre}
         keyy={card.nombre}
-        path={`${url}/` + card.nombre}
+        path={`${url}/${card.nombre}`}
       />
       <br />
     </Col>

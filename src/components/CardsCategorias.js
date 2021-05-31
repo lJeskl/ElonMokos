@@ -5,6 +5,7 @@ import { useRouteMatch } from 'react-router';
 
 function Cards(props) {
   const { url } = useRouteMatch();
+  console.log(url);
   let nameLista = () => props.setNameLista('Categorías');
   let getCards = () => props.getCards({ cardtype: 'categoria' });
   let cardUrl = () => props.setCardUrl(url);
