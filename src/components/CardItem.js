@@ -1,8 +1,38 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardImg, CardBody } from 'reactstrap';
+import { MDBCloseIcon, MDB } from 'mdbreact';
+import { deleteProduct, deleteCategoria } from '../ApiCore';
 
 function CardItem(props) {
+  const remove = async () => {
+    if (
+      window.confirm(
+        `Está a punto de eliminar ${props.label} ¿Desea continuar?`
+      )
+    ) {
+      if (props.cardtype === 'Categoria') {
+        await deleteCategoria(props.label);
+        props.getCards({});
+      } else {
+        await deleteProduct(props.label);
+        props.getCards({});
+      }
+    }
+
+    //props.setCards(props.cards.filter((card) => card !== props.label));
+  };
+  const deleteButton = props.eliminarProduct ? (
+    <MDBCloseIcon
+      className="btn-close-icon"
+      onClick={() => {
+        console.log('Holas');
+        remove();
+      }}
+    />
+  ) : (
+    <></>
+  );
   return (
     <div>
       <Card className="cards__item" key={props.keyy}>
@@ -18,6 +48,7 @@ function CardItem(props) {
             <h5 className="cards__item__text">{props.text}</h5>
           </CardBody>
         </Link>
+        {deleteButton}
       </Card>
     </div>
   );

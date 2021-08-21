@@ -2,16 +2,21 @@ import React from 'react';
 import { useRouteMatch, useParams } from 'react-router';
 import Footer from '../Footer';
 import CardsWrapper from '../CardsWrapper';
-import CardsProducts from '../CardsProducts';
+import CardProducto from '../CardProducto';
 
 function Products(props) {
   const match = useRouteMatch();
+  const cardListName = useParams();
+  console.log(cardListName);
+
   return (
     <>
-      <CardsWrapper
+      {/* <CardsWrapper
         match={match}
+        nombreCategoria={cardListName}
         render={(
           cards,
+          setCards,
           getCards,
           categoriaCard,
           setNameLista,
@@ -23,6 +28,7 @@ function Products(props) {
           return (
             <CardsProducts
               cards={cards}
+              setCards={setCards}
               getCards={getCards}
               categoriaCard={categoriaCard}
               cardListName={cardListName}
@@ -39,6 +45,11 @@ function Products(props) {
             />
           );
         }}
+      /> */}
+      <CardProducto
+        loggedInStatus={props.loggedInStatus}
+        isAdmin={props.isAdmin}
+        token={props.token}
       />
       <Footer />
     </>

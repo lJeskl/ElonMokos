@@ -2,21 +2,34 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import './infoProduct.css';
 import { getInfoProduct } from '../ApiCore';
+import Fab from '@material-ui/core/Fab';
+import EditIcon from '@material-ui/icons/Edit';
+import { useRouteMatch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-function InfoProduct() {
-  const [prueba, setPrueba] = useState({});
+function InfoProduct(props) {
+  const match = useRouteMatch();
+  const [producto, setProducto] = useState({});
   const { cardListName, productName } = useParams();
+
+  const editButton =
+    props.loggedInStatus && props.isAdmin ? (
+      <Fab color="secondary" aria-label="edit">
+        <EditIcon />
+      </Fab>
+    ) : (
+      <></>
+    );
 
   useEffect(() => {
     const infoProduct = async () => {
       const res = await getInfoProduct(productName);
-      setPrueba(res.data);
+      setProducto(res.data);
       console.log(res);
       return res;
     };
     infoProduct();
   }, []);
-  console.log(prueba);
   const {
     imagen,
     descripcion,
@@ -27,7 +40,9 @@ function InfoProduct() {
     acompañamientos,
     otros,
     tiempo,
-  } = prueba;
+    iva,
+    stock,
+  } = producto;
 
   let listInfo = (typeInfo) => {
     if (!(typeInfo === undefined))
@@ -37,6 +52,7 @@ function InfoProduct() {
   return (
     <div className="info_container">
       <h2 className="title">{productName}</h2>
+      <Link to={`${match.url}/editProduct`}>{editButton}</Link>
       <br />
       <img className="product-image" alt="" src={imagen} />
       <p className="info-paragraph">
@@ -48,12 +64,17 @@ function InfoProduct() {
         <br />
         precio con descuento: ${precio_con_descuento}
         <br />
+        Iva: {iva}
+        <br />
+        Tiempo: {tiempo}
       </p>
       Ingredientes: {listInfo(ingredientes)}
       <br />
       Acompañamientos: {listInfo(acompañamientos)}
       <br />
       Otros: {listInfo(otros)}
+      <br />
+      stock: {stock}
     </div>
   );
 }

@@ -25,7 +25,11 @@ function Nav_bar(props) {
   }, []);
 
   window.addEventListener('resize', showButton);
-  console.log(props.isAdmin);
+  const respuestaGoogle = async (respuesta) => {};
+
+  const respuestaErrorGoogle = (respuesta) => {
+    console.log(respuesta);
+  };
 
   const reportes =
     props.loggedInStatus && props.isAdmin ? (
@@ -37,6 +41,25 @@ function Nav_bar(props) {
     ) : (
       <></>
     );
+
+  const signUpButton = !props.loggedInStatus ? (
+    <button
+      className="Google-login-button"
+      onClick={() => {
+        if (
+          window.confirm(
+            'Para registrarse debe acceder con una cuenta de google'
+          )
+        ) {
+        }
+        console.log('HOla');
+      }}
+    >
+      Sign Up
+    </button>
+  ) : (
+    <></>
+  );
 
   return (
     <>
@@ -82,8 +105,25 @@ function Nav_bar(props) {
               setLoggedInStatus={props.setLoggedInStatus}
               isAdmin={props.isAdmin}
               setIsAdmin={props.setIsAdmin}
+              token={props.token}
+              setToken={props.setToken}
+              signUp={false}
             ></Login>
           )}
+          {button && (
+            <Login
+              handleLogin={props.handleLogin}
+              handleLogOut={props.handleLogOut}
+              loggedInStatus={props.loggedInStatus}
+              setLoggedInStatus={props.setLoggedInStatus}
+              isAdmin={props.isAdmin}
+              setIsAdmin={props.setIsAdmin}
+              token={props.token}
+              setToken={props.setToken}
+              signUp={true}
+            ></Login>
+          )}
+          {/* <Link to="/signUp">{signUpButton}</Link> */}
         </div>
       </Navbar>
     </>

@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
 import { Button, Input, Col, Container, Row, ButtonToggle } from 'reactstrap';
 import { getDetalles, sendProduct } from '../ApiCore';
 import DatePicker from 'react-datepicker';
-import { MDBCloseIcon, MDB } from 'mdbreact';
+import { MDBCloseIcon } from 'mdbreact';
 import 'react-datepicker/dist/react-datepicker.css';
 import './AddProduct.css';
 function AddProduct(props) {
+  //Guarda la url Actual
+  const match = useRouteMatch();
+  const nombreCategoria = match.params.cardListName;
   const [product, setProduct] = useState({
     productName: '',
+    categoria: nombreCategoria,
     codigo: '',
     descripcionProduct: '',
     urlimg: '',
@@ -20,6 +24,7 @@ function AddProduct(props) {
     acompanamientos: [],
     caracteristica: '',
     caracteristicas: [],
+    tiempo: '',
     descuento: '',
     fechaInicial: '',
     fechaFinal: '',
@@ -34,7 +39,9 @@ function AddProduct(props) {
     useState([]);
   const [renderDescuento, setRenderDescuento] = useState(false);
   const [renderIVA, setRenderIVA] = useState(false);
+  const [respuestaServer, setRespuestaServer] = useState({ status: 0 });
 
+  //Petición a la base de datos de los ingredientes, acompañamientos y las caracteristicas importantes, según lo que halla escrito el usuario en el respectivo campo
   useEffect(() => {
     const Detalles = async (tipoDetalle, detalle) => {
       let res = await getDetalles(tipoDetalle, detalle);
@@ -61,8 +68,9 @@ function AddProduct(props) {
     }
   }, [product.ingrediente, product.acompanamiento, product.caracteristica]);
 
-  console.log(característicasImportantesList);
+  //HANDLERS
 
+  //Modifica los campos del objeto product, a medida que el usuario escribe el input
   const handleSubmitOnChange = (event) => {
     console.log(event.target.value);
 
@@ -72,11 +80,9 @@ function AddProduct(props) {
     });
   };
 
+  //Cuando el usuario presiona Enter en los campos de ingrediente, acompañamiento o características, agrega a la respectiva lista lo que haya escrito en el campo
   const handlePressedEnter = (event) => {
     if (event.key === 'Enter') {
-      console.log(event.target.name);
-      console.log(event.target.value);
-      console.log(':DDDDDDDDDD');
       if (event.target.name === 'ingrediente') {
         setProduct({
           ...product,
@@ -97,10 +103,57 @@ function AddProduct(props) {
       }
     }
   };
+  //Elimina la tarjeta del ingrediente, acompañamiento o caracteristica, al presionar la x
+  const handleOnCLose = (event, typeList) => {
+    let itemName = event.target.parentElement.name;
+    console.log(event.target);
+    if (typeList === 'ingrediente') {
+      setProduct({
+        ...product,
+        ingredientes: product.ingredientes.filter(
+          (ingrediente) => ingrediente !== itemName
+        ),
+      });
+    }
+    if (typeList === 'acompanamiento') {
+      setProduct({
+        ...product,
+        acompanamientos: product.acompanamientos.filter(
+          (acompanamiento) => acompanamiento !== itemName
+        ),
+      });
+    }
+    if (typeList === 'caracteristica') {
+      setProduct({
+        ...product,
+        caracteristicas: product.caracteristicas.filter(
+          (caracteristica) => caracteristica !== itemName
+        ),
+      });
+    }
+  };
 
-  const sendData = () => {
+  const validateSubmitData = (product) => {
+    if (!Number(parseInt(product.codigo))) {
+      console.log(
+        'El valor ingresado en CODIGO es incorrecto (Este campo no puede estar vacío y debe contener solo números [0-9])'
+      );
+    } else {
+      console.log(':D');
+    }
+    if (product.productName === '') {
+      console.log('El campo del Nombre del producto no debe estar vacío');
+    }
+    if (product.descripcionProduct === '') {
+      console.log('El campo de la Descripción no debe estar vacío');
+    }
+  };
+
+  //Envía los datos del formulario al back
+  const sendData = async () => {
     const productFinal = {
       productName: product.productName,
+      categoria: product.categoria,
       codigo: product.codigo,
       descripcionProduct: product.descripcionProduct,
       urlimg: product.urlimg,
@@ -109,14 +162,24 @@ function AddProduct(props) {
       ingredientes: product.ingredientes,
       acompanamientos: product.acompanamientos,
       caracteristicas: product.caracteristicas,
+      tiempo: product.tiempo,
       descuento: product.descuento,
-      fechaInicial: product.fechaInicial,
-      fechaFinal: product.fechaFinal,
+      fecha_inicial: product.fechaInicial,
+      fecha_final: product.fechaFinal,
       stock: product.stock,
       iva: product.iva,
     };
-    sendProduct(productFinal);
+    validateSubmitData(productFinal);
+    setRespuestaServer(await sendProduct(productFinal));
   };
+
+  //COMPONENTES CONDICIONALES
+  const errorDeCampoProductNAme =
+    respuestaServer.status === 500 ? (
+      <small className="form-text text-danger">{`${respuestaServer.data.productName}*`}</small>
+    ) : (
+      <></>
+    );
 
   const Descuento = renderDescuento ? (
     <div className="form-group">
@@ -135,13 +198,22 @@ function AddProduct(props) {
 
       <DatePicker
         selected={fechaInicial}
+        dateFormat="dd/MM/yyyy"
         onChange={(date) => {
           setFechaInicial(date);
+          var dia = date.getDate();
+          var mes = date.getMonth() + 1;
+          var anio = date.getFullYear();
+          if (mes < 10) {
+            mes = `0${mes}`;
+          }
+          if (dia < 10) {
+            dia = `0${dia}`;
+          }
+
           setProduct({
             ...product,
-            fechaInicial: `${date.getFullYear()}-${
-              date.getMonth() + 1
-            }-${date.getDate()}`,
+            fechaInicial: `${anio}-${mes}-${dia}`,
           });
         }}
       />
@@ -151,13 +223,22 @@ function AddProduct(props) {
 
       <DatePicker
         selected={fechaFinal}
+        dateFormat="dd/MM/yyyy"
         onChange={(date) => {
           setFechaFinal(date);
+          var dia = date.getDate();
+          var mes = date.getMonth() + 1;
+          var anio = date.getFullYear();
+          if (mes < 10) {
+            mes = `0${mes}`;
+          }
+          if (dia < 10) {
+            dia = `0${dia}`;
+          }
+
           setProduct({
             ...product,
-            fechaFinal: `${date.getFullYear()}-${
-              date.getMonth() + 1
-            }-${date.getDate()}`,
+            fechaFinal: `${anio}-${mes}-${dia}`,
           });
         }}
       />
@@ -184,6 +265,7 @@ function AddProduct(props) {
 
   //===============================
 
+  //Agregar un elemento a la lista correspondiente, en el caso que no exista
   const addItemList = (tipoLista, item) => {
     if (tipoLista === 'ingredientes') {
       if (!product.ingredientes.some((ingrediente) => ingrediente === item))
@@ -238,7 +320,11 @@ function AddProduct(props) {
           <Button color="warning" className="mr-0">
             {ingrediente}
           </Button>
-          <MDBCloseIcon className="btn-close-icon" />
+          <MDBCloseIcon
+            className="btn-close-icon"
+            onClick={(event) => handleOnCLose(event, 'ingrediente')}
+            name={ingrediente}
+          />
 
           <br />
         </div>
@@ -247,7 +333,15 @@ function AddProduct(props) {
     if (tipoLista === 'acompañamientos') {
       return product.acompanamientos.map((acompanamiento) => (
         <div>
-          {acompanamiento}
+          <Button color="warning" className="mr-0">
+            {acompanamiento}
+          </Button>
+          <MDBCloseIcon
+            className="btn-close-icon"
+            onClick={(event) => handleOnCLose(event, 'acompanamiento')}
+            name={acompanamiento}
+          />
+
           <br />
         </div>
       ));
@@ -255,7 +349,15 @@ function AddProduct(props) {
     if (tipoLista === 'caracteristicas') {
       return product.caracteristicas.map((caracteristica) => (
         <div>
-          {caracteristica}
+          <Button color="warning" className="mr-0">
+            {caracteristica}
+          </Button>
+          <MDBCloseIcon
+            className="btn-close-icon"
+            onClick={(event) => handleOnCLose(event, 'caracteristica')}
+            name={caracteristica}
+          />
+
           <br />
         </div>
       ));
@@ -278,14 +380,12 @@ function AddProduct(props) {
               name="productName"
               onChange={handleSubmitOnChange}
             />
-            <small id="emailHelp" className="form-text text-muted">
-              We'll never share your email with anyone else.
-            </small>
+            {errorDeCampoProductNAme}
           </div>
           <div className="form-group">
             <label>Codigo producto</label>
             <Input
-              type="text"
+              type="number"
               className="form-control"
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
@@ -405,6 +505,19 @@ function AddProduct(props) {
             <label>Características importantes del producto:</label>
           </div>
           <div>{drawItemsProduct('caracteristicas')}</div>
+          <div>
+            <br />
+            <label>Tiempo:</label>
+            <Input
+              type="text"
+              className="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              placeholder="Ingrese el Tiempo"
+              name="tiempo"
+              onChange={handleSubmitOnChange}
+            />
+          </div>
           <div>
             <ButtonToggle
               color="warning"

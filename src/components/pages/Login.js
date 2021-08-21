@@ -6,27 +6,33 @@ import { addUser, checkLogin, getUsuarios } from '../../ApiCore';
 import { GoogleLogout, GoogleLogin } from 'react-google-login';
 
 export default function Login(props) {
-  const [token, setToken] = useState('');
+  //const [token, setToken] = useState('');
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState({});
 
   const respuestaGoogle = async (respuesta) => {
-    setToken(respuesta.tokenId);
+    props.setToken(respuesta.tokenId);
+    console.log(respuesta);
     setUser(respuesta.profileObj);
-
     const data = {
       tokenId: respuesta.tokenId,
     };
-    let loggedin = await checkLogin(data);
-    console.log(loggedin);
-    if (loggedin.existe) {
-      console.log('Login Existoso!');
-      await props.setLoggedInStatus(true);
-      if (loggedin.admin) {
-        await props.setIsAdmin(true);
+    //addUser(data);
+    if (!props.signUp) {
+      let loggedin = await checkLogin(data);
+      console.log(loggedin);
+      if (loggedin.existe) {
+        console.log('Login Existoso!');
+        await props.setLoggedInStatus(true);
+        if (loggedin.admin) {
+          await props.setIsAdmin(true);
+        }
+      } else {
+        console.log('El usuario no existe');
       }
     } else {
-      console.log('El usuario no existe');
+      console.log('SIUUUUUUUUUUUUUUUU SignUP');
+      console.log(user);
     }
   };
 
@@ -35,6 +41,7 @@ export default function Login(props) {
   };
 
   const logout = () => {
+    props.setToken('');
     props.handleLogOut();
     console.log('Sesión cerrada');
   };
@@ -48,20 +55,42 @@ export default function Login(props) {
 
   const LoginLogoutButton =
     props.loggedInStatus === true ? (
-      <GoogleLogout
-        clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
-        buttonText="Logout"
-        onLogoutSuccess={logout}
+      !props.signUp ? (
+        <GoogleLogout
+          clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+          buttonText="Logout"
+          onLogoutSuccess={logout}
+          render={(renderProps) => (
+            <button
+              className="Google-login-button"
+              onClick={renderProps.onClick}
+              disabled={renderProps.disabled}
+            >
+              Logout
+            </button>
+          )}
+        ></GoogleLogout>
+      ) : (
+        <></>
+      )
+    ) : props.signUp ? (
+      <GoogleLogin
+        clientId="440158364737-j5qip3if0rofol8hjhdickps76mg9j4b.apps.googleusercontent.com"
+        buttonText="SignUp"
+        onSuccess={respuestaGoogle}
+        onFailure={respuestaErrorGoogle}
+        isSignedIn={true}
+        cookiePolicy={'single_host_origin'}
         render={(renderProps) => (
           <button
             className="Google-login-button"
             onClick={renderProps.onClick}
             disabled={renderProps.disabled}
           >
-            Logout
+            SignUp
           </button>
         )}
-      ></GoogleLogout>
+      />
     ) : (
       <GoogleLogin
         clientId="440158364737-j5qip3if0rofol8hjhdickps76mg9j4b.apps.googleusercontent.com"

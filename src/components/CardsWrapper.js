@@ -25,28 +25,34 @@ function CardsWrapper(props) {
       return response;
     } else {
       let response = await getProducts(props.match.params.cardListName);
-      setCards(response.data);
+      if (cards.length !== response.data.length) {
+        setCards(response.data);
+      }
+
       return response;
     }
   };
 
-  let categoriaCard = cards.map((card) => (
-    <Col sm="4">
-      <CardItem
-        src={card.imagen}
-        text={card.descripcion}
-        label={card.nombre}
-        keyy={card.nombre}
-        path={`${url}/${card.nombre}`}
-      />
-      <br />
-    </Col>
-  ));
+  let categoriaCard = (eliminarProduct) =>
+    cards.map((card) => (
+      <Col sm="4">
+        <CardItem
+          src={card.imagen}
+          text={card.descripcion}
+          label={card.nombre}
+          keyy={card.nombre}
+          path={`${url}/${card.nombre}`}
+          eliminarProduct={eliminarProduct}
+        />
+        <br />
+      </Col>
+    ));
 
   return (
     <div>
       {props.render(
         cards,
+        setCards,
         getCards,
         categoriaCard,
         cardListName,

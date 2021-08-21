@@ -10,10 +10,15 @@ import SignIn from './components/pages/SignUp';
 import Login from './components/pages/Login';
 import InfoProduct from './components/InfoProduct';
 import AddProduct from './components/AddProduct';
+import EditProduct from './components/EditProduct';
+import AddCategoria from './components/AddCategoria';
+import EditCategoria from './components/EditCategoria';
+import SignUp from './components/SignUp';
 
 function App() {
   const [loggedInStatus, setLoggedInStatus] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [token, setToken] = useState('');
 
   const handleLogIn = () => {
     setLoggedInStatus(true);
@@ -34,14 +39,46 @@ function App() {
           setLoggedInStatus={setLoggedInStatus}
           isAdmin={isAdmin}
           setIsAdmin={setIsAdmin}
+          token={token}
+          setToken={setToken}
         />
         <Switch>
           <Route exact path="/" exact component={Home} />
           <Route path="/services" component={Services} />
-          <Route exact path="/products" component={Categorias} />
-          <Route path="/sign-up" component={SignIn} />
+          <Route
+            exact
+            path="/signUp"
+            exact
+            render={(props) => (
+              <SignUp {...props} loggedInStatus={loggedInStatus} />
+            )}
+          />
+          <Route
+            exact
+            path="/products/AddCategoria"
+            render={(props) => (
+              <AddCategoria loggedInStatus={loggedInStatus} isAdmin={isAdmin} />
+            )}
+          />
+          <Route
+            exact
+            path="/products"
+            render={(props) => (
+              <Categorias
+                {...props}
+                handleLogin={handleLogIn}
+                handleLogOut={handleLogOut}
+                loggedInStatus={loggedInStatus}
+                setLoggedInStatus={setLoggedInStatus}
+                isAdmin={isAdmin}
+                setIsAdmin={setIsAdmin}
+                token={token}
+              />
+            )}
+          />
           <Route path="/login" component={Login} />
           <Route path="/products/services" component={Services} />
+
           <Route
             exact
             path="/products/:cardListName"
@@ -54,6 +91,7 @@ function App() {
                 setLoggedInStatus={setLoggedInStatus}
                 isAdmin={isAdmin}
                 setIsAdmin={setIsAdmin}
+                token={token}
               />
             )}
           />
@@ -72,10 +110,52 @@ function App() {
               />
             )}
           />
+
+          <Route
+            exact
+            path="/products/:cardListName/editCategoria"
+            render={(props) => (
+              <EditCategoria
+                {...props}
+                handleLogin={handleLogIn}
+                handleLogOut={handleLogOut}
+                loggedInStatus={loggedInStatus}
+                setLoggedInStatus={setLoggedInStatus}
+                isAdmin={isAdmin}
+                setIsAdmin={setIsAdmin}
+              />
+            )}
+          />
           <Route
             exact
             path="/products/:cardListName/:productName"
-            component={InfoProduct}
+            render={(props) => (
+              <InfoProduct
+                {...props}
+                handleLogin={handleLogIn}
+                handleLogOut={handleLogOut}
+                loggedInStatus={loggedInStatus}
+                setLoggedInStatus={setLoggedInStatus}
+                isAdmin={isAdmin}
+                setIsAdmin={setIsAdmin}
+              />
+            )}
+          />
+
+          <Route
+            exact
+            path="/products/:cardListName/:productName/editProduct"
+            render={(props) => (
+              <EditProduct
+                {...props}
+                handleLogin={handleLogIn}
+                handleLogOut={handleLogOut}
+                loggedInStatus={loggedInStatus}
+                setLoggedInStatus={setLoggedInStatus}
+                isAdmin={isAdmin}
+                setIsAdmin={setIsAdmin}
+              />
+            )}
           />
         </Switch>
       </Router>
