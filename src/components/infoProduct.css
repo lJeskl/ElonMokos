@@ -1,0 +1,25 @@
+.info_container {
+  margin: 15px 15px;
+  position: absolute;
+  width: 75%;
+  padding: auto;
+}
+.info-paragraph {
+  color: black;
+  text-align: justify;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+    'Lucida Sans', Arial, sans-serif;
+}
+
+.title {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+    'Lucida Sans', Arial, sans-serif;
+  font-weight: bolder;
+}
+
+.product-image {
+  float: left;
+  width: 500px;
+  height: 500px;
+  margin-right: 15px;
+}
