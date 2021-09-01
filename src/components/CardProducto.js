@@ -88,6 +88,7 @@ function CardProducto(props) {
     getCards({});
   }, [cards]);
 
+  console.log(':DDDDDDDDDDDDDDDDDDD');
   console.log(cards);
   console.log(match);
   console.log(props.loggedInStatus);
