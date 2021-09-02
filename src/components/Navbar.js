@@ -52,6 +52,12 @@ function Nav_bar(props) {
       <></>
     );
 
+  const loginButton = !props.loggedInStatus ? (
+    <button className="Google-login-button">Login</button>
+  ) : (
+    <></>
+  );
+
   const signUpButton = !props.loggedInStatus ? (
     <button
       className="Google-login-button"
@@ -109,7 +115,7 @@ function Nav_bar(props) {
               </Link>
             </li>
           </ul>
-          {button && (
+          {loginButton && (
             <Login
               handleLogin={props.handleLogin}
               handleLogOut={props.handleLogOut}
@@ -122,6 +128,8 @@ function Nav_bar(props) {
               signUp={false}
               userData={props.userData}
               setUserData={props.setUserData}
+              login01={props.login01}
+              setLogin01={props.setLogin01}
             ></Login>
           )}
           {signUpButton && (

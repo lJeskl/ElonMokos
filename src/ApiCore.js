@@ -19,6 +19,7 @@ export const addUser = (data) => {
     })
     .catch((err) => {
       console.log(err);
+      return err;
     });
 };
 

@@ -17,7 +17,7 @@ function Login(props) {
     //addUser(data);
     if (!props.signUp) {
       let loggedin = await checkLogin(data);
-      console.log(loggedin);
+      console.log(loggedin.existe);
       if (loggedin.existe) {
         console.log('Login Existoso!');
         await props.setLoggedInStatus(true);
@@ -25,7 +25,10 @@ function Login(props) {
           await props.setIsAdmin(true);
         }
       } else {
-        console.log('El usuario no existe');
+        if (props.login01) {
+          window.alert('El usuario no existe');
+        }
+        props.setLogin01(true);
       }
     } else {
       console.log('SIUUUUUUUUUUUUUUUU SignUP');
@@ -48,6 +51,7 @@ function Login(props) {
     props.setToken('');
     props.handleLogOut();
     console.log('Sesión cerrada');
+    props.history.push('/');
   };
 
   async function getUsers() {
@@ -104,7 +108,10 @@ function Login(props) {
         render={(renderProps) => (
           <button
             className="Google-login-button"
-            onClick={renderProps.onClick}
+            onClick={() => {
+              console.log('HOOOOOOOOLAAAAAAAAA LOGIN');
+              return renderProps.onClick();
+            }}
             disabled={renderProps.disabled}
           >
             Login

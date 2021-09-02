@@ -1,20 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap');
+
 .info_container {
   margin: 15px 15px;
-  position: absolute;
-  width: 75%;
+  margin-top: 70px;
+  /* position: static; */
+  width: 80%;
   padding: auto;
+  margin-bottom: 100px;
 }
-.info-paragraph {
+
+.lista {
   color: black;
-  text-align: justify;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
-    'Lucida Sans', Arial, sans-serif;
+  /* text-align: justify; */
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
 }
 
 .title {
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
-    'Lucida Sans', Arial, sans-serif;
-  font-weight: bolder;
+  /* font-family: 'Open Sans', sans-serif; */
+  font-family: 'Bebas Neue', cursive;
+  /* font-weight: 500; */
+  font-size: 80px;
+}
+
+.info-paragraph {
+  color: black;
+  /* text-align: justify; */
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+}
+
+p > span {
+  color: black;
+  /* text-align: justify; */
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
 }
 
 .product-image {
@@ -25,5 +46,11 @@
   height: auto;
   margin-right: 50px;
   margin-left: 50px;
+  margin-top: 10px;
   display: block;
+  border-radius: 10px;
+
+  border: 1px solid #ddd;
+  padding: 5px;
+  box-shadow: 5px 6px 15px 0px rgba(0, 0, 0, 0.3);
 }

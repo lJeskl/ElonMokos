@@ -146,6 +146,8 @@ function EditProduct(props) {
     };
     await editProduct(productoFinal);
     setDisableButton(false);
+    window.alert('Información de producto Actualizada');
+    window.location.href = `/products/${producto.categoria}/${producto.nombre}`;
   };
 
   const formatDate = (anio, mes, dia) => {

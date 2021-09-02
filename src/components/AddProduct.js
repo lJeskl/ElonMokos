@@ -39,7 +39,7 @@ function AddProduct(props) {
     useState([]);
   const [renderDescuento, setRenderDescuento] = useState(false);
   const [renderIVA, setRenderIVA] = useState(false);
-  const [respuestaServer, setRespuestaServer] = useState({ status: 0 });
+  const [respuestaServer, setRespuestaServer] = useState({ status: 500 });
 
   //Petición a la base de datos de los ingredientes, acompañamientos y las caracteristicas importantes, según lo que halla escrito el usuario en el respectivo campo
   useEffect(() => {
@@ -171,11 +171,14 @@ function AddProduct(props) {
     };
     validateSubmitData(productFinal);
     setRespuestaServer(await sendProduct(productFinal));
+    if (respuestaServer.status === 500) {
+      window.location.href = `/products/${product.categoria}`;
+    }
   };
 
   //COMPONENTES CONDICIONALES
   const errorDeCampoProductNAme =
-    respuestaServer.status === 500 ? (
+    respuestaServer.status !== 500 ? (
       <small className="form-text text-danger">{`${respuestaServer.data.productName}*`}</small>
     ) : (
       <></>

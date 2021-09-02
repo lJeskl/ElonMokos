@@ -21,6 +21,7 @@ function App() {
   const [loggedInStatus, setLoggedInStatus] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [token, setToken] = useState('');
+  const [login01, setLogin01] = useState(false);
   const [userData, setUserData] = useState({
     email: '',
     nombres: '',
@@ -53,6 +54,8 @@ function App() {
           setToken={setToken}
           userData={userData}
           setUserData={setUserData}
+          login01={login01}
+          setLogin01={setLogin01}
         />
         <Switch>
           <Route exact path="/" exact component={Home} />
@@ -181,6 +184,7 @@ function App() {
             )}
           />
         </Switch>
+        <Footer />
       </Router>
       {/* <Footer /> */}
     </>

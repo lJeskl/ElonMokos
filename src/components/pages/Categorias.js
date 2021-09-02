@@ -41,7 +41,7 @@ export default function Categorias(props) {
           );
         }}
       />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

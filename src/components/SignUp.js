@@ -69,10 +69,13 @@ function SignUp(props) {
     ) {
       window.alert('No deben haber campos vacíos en el formulario');
     } else {
-      await addUser(userInfoFinal);
-
-      window.alert('Usuario registrado');
-      window.location.href = '/';
+      let response = await addUser(userInfoFinal);
+      if (response) {
+        window.alert(response);
+      } else {
+        window.alert('Usuario registrado');
+        window.location.href = '/';
+      }
     }
   };
   const userForm = !props.loggedInStatus ? (

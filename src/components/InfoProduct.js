@@ -6,6 +6,7 @@ import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import { useRouteMatch } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import Footer from './Footer';
 
 function InfoProduct(props) {
   const match = useRouteMatch();
@@ -47,35 +48,38 @@ function InfoProduct(props) {
 
   let listInfo = (typeInfo) => {
     if (!(typeInfo === undefined))
-      return typeInfo.map((typeInfoItem) => <ul>{typeInfoItem}</ul>);
+      return typeInfo.map((typeInfoItem) => (
+        <span class="lista">{typeInfoItem}, </span>
+      ));
   };
 
   return (
     <div className="info_container">
-      <h2 className="title">{productName}</h2>
       <Link to={`${match.url}/editProduct`}>{editButton}</Link>
       <br />
       <img className="product-image" alt="" src={imagen} />
+      <h2 className="title">{productName}</h2>
       <p className="info-paragraph">
-        Descripción: {descripcion}
+        <span>Descripción:</span> {descripcion}
         <br />
-        precio: ${precio}
+        <span>Precio:</span> ${precio}
         <br />
-        Porcentaje de descuento: {porcentaje} %
+        <span>Porcentaje de descuento:</span> {porcentaje} %
         <br />
-        precio con descuento: ${precio_con_descuento}
+        <span>Precio con descuento:</span> ${precio_con_descuento}
         <br />
-        Iva: {iva}
+        <span>IVA:</span> {iva}
         <br />
-        Tiempo: {tiempo}
+        <span>Tiempo:</span> {tiempo}
+        <br />
+        <span>Ingredientes:</span> {listInfo(ingredientes)}
+        <br />
+        <span>Acompañamientos:</span> {listInfo(acompañamientos)}
+        <br />
+        <span>Otros:</span> {listInfo(otros)}
+        <br />
+        <span>Stock:</span> {stock}
       </p>
-      Ingredientes: {listInfo(ingredientes)}
-      <br />
-      Acompañamientos: {listInfo(acompañamientos)}
-      <br />
-      Otros: {listInfo(otros)}
-      <br />
-      stock: {stock}
     </div>
   );
 }

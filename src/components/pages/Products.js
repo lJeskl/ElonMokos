@@ -51,7 +51,6 @@ function Products(props) {
         isAdmin={props.isAdmin}
         token={props.token}
       />
-      <Footer />
     </>
   );
 }

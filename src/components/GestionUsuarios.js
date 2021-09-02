@@ -21,6 +21,7 @@ function GestionUsuarios() {
     getUsers();
   }, [users]);
 
+  console.log(users);
   const columns = [
     { field: 'id', headerName: 'Correo', width: 200 },
     {
@@ -63,7 +64,9 @@ function GestionUsuarios() {
       disableClickEventBubbling: true,
       renderCell: (params) => {
         const onClick = async () => {
+          //SEGUIR AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
           await deleteUsuario(params.id);
+          setUsers(users.filter((user) => user.id !== params.id));
         };
 
         return (
