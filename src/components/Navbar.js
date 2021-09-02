@@ -3,7 +3,7 @@ import './Button.css';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 import Login from './pages/Login';
-import { Navbar } from 'reactstrap';
+import { Navbar, NavbarBrand } from 'reactstrap';
 
 function Nav_bar(props) {
   const [click, setClick] = useState(false);
@@ -78,6 +78,7 @@ function Nav_bar(props) {
           <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
             ElonMokos
           </Link>
+          {/* <NavbarBrand href="/">ElonMokos</NavbarBrand> */}
           <div className="menu-icon" onClick={handleClick}>
             <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
           </div>

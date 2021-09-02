@@ -74,10 +74,10 @@ function Cards(props) {
 
   return (
     <div className="cards">
-      <h1>Categorías</h1>
-      <br />
+      <h1 class="display-1">Categorías</h1>
       <Link to={`${match.url}/AddCategoria`}>{addButton}</Link>
       <br />
+      {/* <br /> */}
       {deleteButton}
       <Container>
         <Row>{categoriaCard(eliminarProducts, 'Categoria')}</Row>

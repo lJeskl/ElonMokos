@@ -170,7 +170,7 @@ function SignUp(props) {
 
               setUserInfo({
                 ...userInfo,
-                fechaNacimiento: `${dia}-${mes}-${anio}`,
+                fechaNacimiento: `${anio}-${mes}-${dia}`,
               });
             }}
           />

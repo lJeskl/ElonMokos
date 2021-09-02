@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import './App.css';
 import Home from './components/pages/Home';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Services from './components/pages/Services';
 import Categorias from './components/pages/Categorias';
 import Products from './components/pages/Products';
-import SignIn from './components/pages/SignUp';
 import Login from './components/pages/Login';
 import InfoProduct from './components/InfoProduct';
 import AddProduct from './components/AddProduct';
@@ -182,6 +182,7 @@ function App() {
           />
         </Switch>
       </Router>
+      {/* <Footer /> */}
     </>
   );
 }

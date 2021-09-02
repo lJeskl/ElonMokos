@@ -11,7 +11,10 @@ function HeroSection() {
       <video src="/videos/videobackground.mp4" autoPlay loop muted />
       <div className="hero-btns">
         <Link to="/products">
-          <button className="Google-login-button">Nuestro Menú</button>
+          {/* <button className="Google-login-button">Nuestro Menú</button> */}
+          <h1 id="menu" class="display-1">
+            Nuestro Menú
+          </h1>
         </Link>
       </div>
     </div>

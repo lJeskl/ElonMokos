@@ -43,11 +43,11 @@ function CardProducto(props) {
 
   const editButton =
     props.loggedInStatus && props.isAdmin ? (
-      <Fab color="secondary" aria-label="edit">
+      <Fab className="edit-button" color="secondary" aria-label="edit">
         <EditIcon />
       </Fab>
     ) : (
-      <>button</>
+      <></>
     );
 
   const getCards = async ({ cardtype }) => {
@@ -94,7 +94,7 @@ function CardProducto(props) {
   console.log(props.loggedInStatus);
   return (
     <div className="cards">
-      <h1>{match.params.cardListName}</h1>
+      <h1 class="display-1">{match.params.cardListName}</h1>
       <br />
       <Link to={`${match.url}/addProduct`}> {addButton}</Link>
       <br />

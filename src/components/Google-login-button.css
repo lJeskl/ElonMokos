@@ -1,19 +1,18 @@
 .Google-login-button {
-  background-color: transparent;
-  color: #fff;
+  background-color: white;
+  color: red;
   margin-left: 10px;
+  margin-top: -1%;
   padding: 8px 20px;
   font-size: 18px;
-  border: 1px solid var(--primary);
+  /*border: 1px solid var(--primary);*/
+  border: 0px solid yellow;
   transition: all 0.3s ease-out;
   cursor: pointer;
+  border-radius: 20px;
 }
 .Google-login-button:hover {
-  background-color: #fff;
-  color: #242424;
-  padding: 8px 20px;
-  font-size: 18px;
-  border: 1px solid var(--primary);
-  transition: all 0.3s ease-out;
-  cursor: pointer;
+  /* background-color: transparent; */
+  /* color: white; */
+  background-color: lightgrey;
 }
