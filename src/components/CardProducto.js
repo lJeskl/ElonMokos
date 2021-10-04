@@ -17,6 +17,7 @@ function CardProducto(props) {
   const [cardListName, setCardListName] = useState('');
   const [url, setUrl] = useState('');
   const [eliminarProducts, setEliminarProducts] = useState(false);
+  const [quantity, setquantity] = useState(0);
 
   const addButton =
     props.loggedInStatus && props.isAdmin ? (
@@ -58,6 +59,8 @@ function CardProducto(props) {
       return response;
     } else {
       let response = await getProducts(match.params.cardListName);
+      console.log('GET PRODUCTS');
+      console.log(response);
       if (cards.length !== response.data.length) {
         setCards(response.data);
       }
@@ -79,6 +82,11 @@ function CardProducto(props) {
           setCards={setCards}
           cards={cards}
           getCards={getCards}
+          quantity={quantity}
+          price={card.precio}
+          setquantity={setquantity}
+          cartItems={props.cartItems}
+          setCartItems={props.setCartItems}
         />
         <br />
       </Col>

@@ -4,10 +4,17 @@ import { Link } from 'react-router-dom';
 import './Navbar.css';
 import Login from './pages/Login';
 import { Navbar, NavbarBrand } from 'reactstrap';
+import Button from 'react-bootstrap/Button';
+import Badge from 'react-bootstrap/Badge';
+import { FaShoppingCart } from 'react-icons/fa';
 
 function Nav_bar(props) {
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
+  const [cartItems, setCartItems] = useState(
+    JSON.parse(localStorage.getItem('productList')).length
+  );
+  var data = 0;
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
@@ -22,9 +29,35 @@ function Nav_bar(props) {
 
   useEffect(() => {
     showButton();
-  }, []);
+    data = localStorage.getItem('productList');
+    if (
+      JSON.parse(data).length !==
+      JSON.parse(localStorage.getItem('productList')).length
+    ) {
+      console.log(JSON.parse(data).length);
+      console.log(JSON.parse(localStorage.getItem('productList')).length);
+      setCartItems(JSON.parse(data).length);
+    }
+  }, [data, cartItems]);
 
   window.addEventListener('resize', showButton);
+
+  const cart = (
+    <React.Fragment>
+      <Link to="/cart">
+        <Button variant="dark" style={{ position: 'relative' }}>
+          <FaShoppingCart className="mr-1" size="1.5em" />
+          <Badge
+            style={{ position: 'absolute', top: -8, right: -8 }}
+            pill
+            variant="warning"
+          >
+            {props.cartItems}{' '}
+          </Badge>
+        </Button>
+      </Link>
+    </React.Fragment>
+  );
 
   const reportes =
     props.loggedInStatus && props.isAdmin ? (
@@ -148,6 +181,7 @@ function Nav_bar(props) {
             ></Login>
           )}
           {/* <Link to="/signUp">{signUpButton}</Link> */}
+          {cart}
         </div>
       </Navbar>
     </>

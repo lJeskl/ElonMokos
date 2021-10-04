@@ -170,8 +170,8 @@ function AddProduct(props) {
       iva: product.iva,
     };
     validateSubmitData(productFinal);
-    setRespuestaServer(await sendProduct(productFinal));
-    if (respuestaServer.status === 500) {
+    let response = await sendProduct(productFinal);
+    if (response.status === 500) {
       window.location.href = `/products/${product.categoria}`;
     }
   };

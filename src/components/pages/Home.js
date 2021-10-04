@@ -6,6 +6,7 @@ import Footer from '../Footer';
 
 function Home() {
   console.log(process.env.REACT_APP_API_URL);
+  localStorage.getItem('heh');
   return (
     <>
       <HeroSection />

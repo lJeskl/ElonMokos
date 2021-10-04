@@ -16,8 +16,36 @@ function EditCategoria(props) {
       imagen: categoria.imagen,
     };
 
-    await editCategoria(categoriaFinal);
-    setDisableButton(false);
+    if (
+      categoria.nombre === '' ||
+      categoria.descripcion === '' ||
+      categoria.imagen === ''
+    ) {
+      window.alert('No deben haber campos vacíos en el formulario');
+      setDisableButton(false);
+    } else {
+      let response = await editCategoria(categoriaFinal);
+      console.log(response);
+
+      if (response.status === 201) {
+        window.alert(response.data);
+        setDisableButton(false);
+        window.location.href = '/products';
+      } else {
+        var respuesta = '';
+        if (response.data.hasOwnProperty('nombre')) {
+          respuesta = respuesta + 'Nombre: ' + response.data.nombre + '\n';
+        }
+        if (response.data.hasOwnProperty('imagen')) {
+          respuesta = respuesta + 'Imagen: ' + response.data.nombre + '\n';
+        }
+        if (response.data.hasOwnProperty('descripcion')) {
+          respuesta = respuesta + 'Descripcion: ' + response.data.nombre + '\n';
+        }
+        window.alert(respuesta);
+        setDisableButton(false);
+      }
+    }
   };
 
   useEffect(() => {

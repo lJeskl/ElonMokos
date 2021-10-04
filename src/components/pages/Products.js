@@ -50,6 +50,10 @@ function Products(props) {
         loggedInStatus={props.loggedInStatus}
         isAdmin={props.isAdmin}
         token={props.token}
+        cartItems={props.cartItems}
+        setCartItems={props.setCartItems}
+        cartItems={props.cartItems}
+        setCartItems={props.setCartItems}
       />
     </>
   );

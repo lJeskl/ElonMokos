@@ -16,6 +16,7 @@ import EditCategoria from './components/EditCategoria';
 import SignUp from './components/SignUp';
 import GestionUsuarios from './components/GestionUsuarios';
 import EditUser from './components/EditUser';
+import Cart from './components/Cart';
 
 function App() {
   const [loggedInStatus, setLoggedInStatus] = useState(false);
@@ -28,6 +29,18 @@ function App() {
     apellidos: '',
     token: '',
   });
+  if (localStorage.getItem('productList') === null) {
+    localStorage.setItem('productList', JSON.stringify([]));
+  }
+  var aux = 0;
+  JSON.parse(localStorage.getItem('productList')).map((product) => {
+    aux = aux + JSON.parse(product.quantity);
+
+    return aux;
+  });
+  const [cartItems, setCartItems] = useState(aux);
+
+  console.log(aux);
 
   console.log(userData.token);
 
@@ -56,6 +69,7 @@ function App() {
           setUserData={setUserData}
           login01={login01}
           setLogin01={setLogin01}
+          cartItems={cartItems}
         />
         <Switch>
           <Route exact path="/" exact component={Home} />
@@ -118,6 +132,8 @@ function App() {
                 isAdmin={isAdmin}
                 setIsAdmin={setIsAdmin}
                 token={token}
+                cartItems={cartItems}
+                setCartItems={setCartItems}
               />
             )}
           />
@@ -180,6 +196,19 @@ function App() {
                 setLoggedInStatus={setLoggedInStatus}
                 isAdmin={isAdmin}
                 setIsAdmin={setIsAdmin}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/Cart"
+            render={(props) => (
+              <Cart
+                {...props}
+                loggedInStatus={loggedInStatus}
+                isAdmin={isAdmin}
+                cartItems={cartItems}
+                setCartItems={setCartItems}
               />
             )}
           />

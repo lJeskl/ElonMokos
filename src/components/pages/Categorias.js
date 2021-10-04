@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import CardsCategorias from '../CardsCategorias';
 import '../../App.css';
 import Footer from '../Footer';
 import CardsWrapper from '../CardsWrapper';
 
 export default function Categorias(props) {
+  useEffect(() => {
+    //props.setCounter(props.counter + 1);
+  }, []);
+
+  console.log(props.counter);
   return (
     <>
       <CardsWrapper

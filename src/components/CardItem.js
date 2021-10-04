@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardImg, CardBody } from 'reactstrap';
 import { MDBCloseIcon, MDB } from 'mdbreact';
 import { deleteProduct, deleteCategoria } from '../ApiCore';
+import CustomButtonGroup from './CustomButtonGroup';
 
 function CardItem(props) {
+  const [quantity, setquantity] = useState(0);
   const remove = async () => {
     if (
       window.confirm(
@@ -33,6 +35,23 @@ function CardItem(props) {
   ) : (
     <></>
   );
+
+  const customButton =
+    props.cardtype === 'Categoria' ? (
+      <></>
+    ) : (
+      <CustomButtonGroup
+        name={props.label}
+        src={props.src}
+        text={props.text}
+        price={props.price}
+        quantity={quantity}
+        setquantity={setquantity}
+        cartItems={props.cartItems}
+        setCartItems={props.setCartItems}
+        setquantity={props.setquantity}
+      />
+    );
   return (
     <div>
       <Card className="cards__item" key={props.keyy}>
@@ -49,6 +68,7 @@ function CardItem(props) {
           </CardBody>
         </Link>
         {deleteButton}
+        {customButton}
       </Card>
     </div>
   );

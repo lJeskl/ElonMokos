@@ -166,10 +166,12 @@ export const editUser = (data) => {
   return axios
     .put(`${process.env.REACT_APP_API_URL}/usuario`, data)
     .then((res) => {
+      console.log(res);
       return res;
     })
     .catch((err) => {
       console.log(err);
+      return err.response;
     });
 };
 

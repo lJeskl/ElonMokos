@@ -29,6 +29,7 @@ function EditUser(props) {
       setTipoUsuario(await getTipoUsuario());
       setTipoID(await getTipoId());
       var info = await getUsuario(localStorage.getItem('userEmail'));
+      console.log(info);
       setUserInfo(info.data);
       var birthday = new Date(info.data.nacimiento);
       setFechaDeNacimiento(
@@ -45,7 +46,7 @@ function EditUser(props) {
   const [userInfo, setUserInfo] = useState({
     id: '',
     numeroid: '',
-    fechaNacimiento: '',
+    nacimiento: '',
     direccion: '',
     telefono: '',
   });
@@ -80,9 +81,54 @@ function EditUser(props) {
 
     console.log(userInfoFinal);
 
-    await editUser(userInfoFinal);
-    window.alert('Usuario actualizado');
-    window.location.href = '/gestionUsuarios';
+    if (
+      userInfo.nombres === '' ||
+      userInfo.apellidos === '' ||
+      userInfo.direccion === '' ||
+      userInfo.fechaNacimiento === '' ||
+      userInfo.telefono === '' ||
+      userInfo.rol === '' ||
+      userInfo.id === '' ||
+      userInfo.numeroid === ''
+    ) {
+      window.alert('No deben haber campos vacíos en el formulario');
+      //setDisableButton(false);
+    } else {
+      let response = await editUser(userInfoFinal);
+      let respuesta = '';
+      if (response.data === 'ok') {
+        window.alert('Usuario actualizado');
+        window.location.href = '/gestionUsuarios';
+      } else {
+        if (response.data.hasOwnProperty('apellidos')) {
+          respuesta =
+            respuesta + 'apellidos: ' + response.data.apellidos + '\n';
+        }
+        if (response.data.hasOwnProperty('direccion')) {
+          respuesta =
+            respuesta + 'direccion: ' + response.data.direccion + '\n';
+        }
+        if (response.data.hasOwnProperty('fechaNacimiento')) {
+          respuesta =
+            respuesta +
+            'fechaNacimiento: ' +
+            response.data.fechaNacimiento +
+            '\n';
+        }
+        if (response.data.hasOwnProperty('nombres')) {
+          respuesta = respuesta + 'nombres: ' + response.data.nombres;
+        }
+        if (response.data.hasOwnProperty('numeroid')) {
+          respuesta = respuesta + 'numeroid: ' + response.data.numeroid + '\n';
+        }
+        if (response.data.hasOwnProperty('telefono')) {
+          respuesta = respuesta + 'telefono: ' + response.data.telefono + '\n';
+        }
+
+        console.log(response.data);
+        window.alert(respuesta);
+      }
+    }
   };
 
   const editUserForm = (
@@ -98,7 +144,7 @@ function EditUser(props) {
             placeholder="Ingrese el nombre de la categoria"
             name="email"
             defaultValue={localStorage.getItem('userEmail')}
-            disabled={disableField}
+            disabled={true}
             onChange={handleOnChange}
           />
         </div>
@@ -112,7 +158,6 @@ function EditUser(props) {
             placeholder="Ingrese el nombre de la categoria"
             name="nombres"
             defaultValue={userInfo.nombres}
-            disabled={disableField}
             onChange={handleOnChange}
           />
         </div>
@@ -126,7 +171,6 @@ function EditUser(props) {
             placeholder="Ingrese el nombre de la categoria"
             name="apellidos"
             defaultValue={userInfo.apellidos}
-            disabled={disableField}
             onChange={handleOnChange}
           />
         </div>
@@ -142,7 +186,6 @@ function EditUser(props) {
               value={userInfo.rol}
               displayEmpty="Hola"
               name="rol"
-              disabled={disableField}
               onChange={handleOnChange}
             >
               {tipoUsuario.data.map((id) => {
@@ -163,7 +206,6 @@ function EditUser(props) {
               id="demo-simple-select"
               value={userInfo.id}
               name="id"
-              disabled={disableField}
               onChange={handleOnChange}
             >
               {tipoID.data.map((id) => {
@@ -183,7 +225,6 @@ function EditUser(props) {
             placeholder="Ingrese el nombre de la categoria"
             name="documento_key"
             defaultValue={userInfo.documento_key}
-            disabled={disableField}
             onChange={handleOnChange}
           />
         </div>
@@ -193,7 +234,6 @@ function EditUser(props) {
           <DatePicker
             selected={fechaDeNacimiento}
             dateFormat="dd/MM/yyyy"
-            disabled={disableField}
             onChange={(date) => {
               setFechaDeNacimiento(date);
               var dia = date.getDate();
@@ -208,7 +248,7 @@ function EditUser(props) {
 
               setUserInfo({
                 ...userInfo,
-                fechaNacimiento: `${dia}-${mes}-${anio}`,
+                nacimiento: `${anio}-${mes}-${dia}`,
               });
             }}
           />
