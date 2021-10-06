@@ -4,7 +4,6 @@ import Footer from './components/Footer';
 import './App.css';
 import Home from './components/pages/Home';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Services from './components/pages/Services';
 import Categorias from './components/pages/Categorias';
 import Products from './components/pages/Products';
 import Login from './components/pages/Login';
@@ -17,6 +16,10 @@ import SignUp from './components/SignUp';
 import GestionUsuarios from './components/GestionUsuarios';
 import EditUser from './components/EditUser';
 import Cart from './components/Cart';
+import Checkout from './components/Checkout';
+import Sedes from './components/Sedes';
+import InfoSede from './components/InfoSede';
+import Reportes from './components/pages/Reportes';
 
 function App() {
   const [loggedInStatus, setLoggedInStatus] = useState(false);
@@ -29,8 +32,12 @@ function App() {
     apellidos: '',
     token: '',
   });
+  console.log(userData.email);
   if (localStorage.getItem('productList') === null) {
     localStorage.setItem('productList', JSON.stringify([]));
+  }
+  if (localStorage.getItem('total') === null) {
+    localStorage.setItem('total', 0);
   }
   var aux = 0;
   JSON.parse(localStorage.getItem('productList')).map((product) => {
@@ -73,7 +80,17 @@ function App() {
         />
         <Switch>
           <Route exact path="/" exact component={Home} />
-          <Route path="/services" component={Services} />
+          <Route
+            exact
+            path="/reportes"
+            render={(props) => (
+              <Reportes
+                {...props}
+                loggedInStatus={loggedInStatus}
+                isAdmin={isAdmin}
+              />
+            )}
+          />
           <Route
             exact
             path="/gestionUsuarios/editarUsuario"
@@ -117,7 +134,6 @@ function App() {
             )}
           />
           <Route path="/login" render={(props) => <Login {...props} />} />
-          <Route path="/products/services" component={Services} />
 
           <Route
             exact
@@ -209,6 +225,45 @@ function App() {
                 isAdmin={isAdmin}
                 cartItems={cartItems}
                 setCartItems={setCartItems}
+                userData={userData}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/checkout"
+            render={(props) => (
+              <Checkout
+                {...props}
+                loggedInStatus={loggedInStatus}
+                isAdmin={isAdmin}
+                cartItems={cartItems}
+                setCartItems={setCartItems}
+                userData={userData}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/sedes"
+            render={(props) => (
+              <Sedes
+                {...props}
+                loggedInStatus={loggedInStatus}
+                isAdmin={isAdmin}
+                cartItems={cartItems}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/sedes/:sedeid/infosede"
+            render={(props) => (
+              <InfoSede
+                {...props}
+                loggedInStatus={loggedInStatus}
+                isAdmin={isAdmin}
+                cartItems={cartItems}
               />
             )}
           />

@@ -11,6 +11,18 @@ export const checkLogin = (data) => {
     });
 };
 
+export const sendVenta = (data) => {
+  return axios
+    .post(`${process.env.REACT_APP_API_URL}/venta`, data)
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.log(err);
+      return err;
+    });
+};
+
 export const addUser = (data) => {
   return axios
     .post(`${process.env.REACT_APP_API_URL}/login`, data)
@@ -20,6 +32,17 @@ export const addUser = (data) => {
     .catch((err) => {
       console.log(err);
       return err;
+    });
+};
+
+export const getSedes = () => {
+  return axios
+    .get(`${process.env.REACT_APP_API_URL}/sede`)
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.log(err);
     });
 };
 

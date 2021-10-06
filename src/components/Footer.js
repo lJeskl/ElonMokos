@@ -9,19 +9,19 @@ function Footer() {
       <div className="footer-links">
         <div className="footer-link-wrapper">
           <div className="footer-link-items">
-            <h2>About Us</h2>
-            <Link to="/">Who we are</Link>
+            <h2>Acerca de</h2>
+            <Link to="/">Quienes somos</Link>
             <Link to="/">Chefs</Link>
-            <Link to="/">Our Restaurants</Link>
+            <Link to="/">Nuestros Restaurantes</Link>
           </div>
           <div className="footer-link-items">
-            <h2>Contact Us</h2>
-            <Link to="/">Contact</Link>
+            <h2>Contáctanos</h2>
+            <Link to="/">Chat</Link>
           </div>
         </div>
         <div className="footer-link-wrapper">
           <div className="footer-link-items">
-            <h2>Social Media</h2>
+            <h2>Redes</h2>
             <Link to="/">Instagram</Link>
             <Link to="/">Facebook</Link>
             <Link to="/">Youtube</Link>

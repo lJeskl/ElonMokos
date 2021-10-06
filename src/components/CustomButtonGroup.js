@@ -11,7 +11,7 @@ function CustomButtonGroup(props) {
     productList = JSON.parse(localStorage.getItem('productList'));
   }
   var product;
-  console.log(localStorage.getItem('productList') == null);
+
   if (!productList.some((product) => product.name === props.name)) {
     product = productList.filter((product) => product.name === props.name);
   }
@@ -43,9 +43,18 @@ function CustomButtonGroup(props) {
       });
       auxproductList[index].quantity += 1;
       localStorage.setItem('productList', JSON.stringify(auxproductList));
+      props.setProductos(auxproductList);
     }
     props.setquantity(props.quantity + 1);
     props.setCartItems(props.cartItems + 1);
+    if (props.cbtype === 'cartItems') {
+      props.setTotal(props.total + props.price);
+    }
+    localStorage.setItem(
+      'total',
+      JSON.stringify(JSON.parse(localStorage.getItem('total')) + props.price)
+    );
+    //props.setTotal(props.total + props.quantity * props.price);
     //localStorage.setItem('productList', JSON.stringify(productList));
   };
 
@@ -59,14 +68,48 @@ function CustomButtonGroup(props) {
       index += 1;
     });
     auxproductList[index].quantity -= 1;
-    localStorage.setItem('productList', JSON.stringify(auxproductList));
+    props.setquantity(props.quantity - 1);
+    if (props.cbtype === 'cartItems') {
+      props.setTotal(props.total - props.price);
+    }
+    localStorage.setItem(
+      'total',
+      JSON.stringify(JSON.parse(localStorage.getItem('total')) - props.price)
+    );
+    console.log(auxproductList.length);
+    if (auxproductList[index].quantity === 0) {
+      let aux = [];
+      for (let i = index; index < auxproductList.length; i++) {
+        if (i + 1 === auxproductList.length) {
+          console.log('ENTRE :D');
+          props.setCartItems(props.cartItems - 1);
+          auxproductList.pop();
+          props.setProductos(auxproductList);
+          localStorage.setItem('productList', JSON.stringify(auxproductList));
+          console.log(auxproductList);
+          return 0;
+        } else {
+          let a = auxproductList[i + 1];
+          console.log(a);
+          auxproductList[i].name = a.name;
+          auxproductList[i].image = a.image;
+          auxproductList[i].price = a.price;
+          auxproductList[i].quantity = a.quantity;
+          console.log(a.quantity);
+        }
+      }
+    } else {
+      localStorage.setItem('productList', JSON.stringify(auxproductList));
+      props.setProductos(auxproductList);
+    }
+
     props.setquantity(props.quantity - 1);
     props.setCartItems(props.cartItems - 1);
   };
 
   const addCartElement = (
     <Button className="py-2" variant="outline-dark" onClick={handleAdd}>
-      Add to Cart
+      Agregar al carrito
     </Button>
   );
   const plusMinusElement = (
@@ -76,7 +119,11 @@ function CustomButtonGroup(props) {
         -{' '}
       </Button>
       <Button className="disabled" variant="outline-dark">
-        {props.quantity}
+        {props.cbtype === 'cartItems'
+          ? JSON.parse(localStorage.getItem('productList')).filter(
+              (product) => product.name === props.name
+            )[0].quantity
+          : props.quantity}
       </Button>
       <Button className="py-2" variant="outline-dark" onClick={handleAdd}>
         {' '}
@@ -92,7 +139,13 @@ function CustomButtonGroup(props) {
   //       index += 1;
   //   })
 
-  return !props.quantity || props.quantity === 0
+  return props.cbtype === 'cartItems'
+    ? JSON.parse(localStorage.getItem('productList')).filter(
+        (product) => product.name === props.name
+      )[0].quantity === 0
+      ? addCartElement
+      : plusMinusElement
+    : props.quantity === 0
     ? addCartElement
     : plusMinusElement;
 }

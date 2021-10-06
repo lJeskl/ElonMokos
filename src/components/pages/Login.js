@@ -9,7 +9,6 @@ import { withRouter } from 'react-router-dom';
 function Login(props) {
   const respuestaGoogle = async (respuesta) => {
     props.setToken(respuesta.tokenId);
-    console.log(respuesta);
 
     const data = {
       tokenId: respuesta.tokenId,
@@ -30,6 +29,12 @@ function Login(props) {
         }
         props.setLogin01(true);
       }
+      await props.setUserData({
+        email: respuesta.profileObj.email,
+        nombres: respuesta.profileObj.givenName,
+        apellidos: respuesta.profileObj.familyName,
+        token: '',
+      });
     } else {
       console.log('SIUUUUUUUUUUUUUUUU SignUP');
       await props.setUserData({
@@ -73,7 +78,7 @@ function Login(props) {
               onClick={renderProps.onClick}
               disabled={renderProps.disabled}
             >
-              Logout
+              Cerrar Sesión
             </button>
           )}
         ></GoogleLogout>
@@ -93,7 +98,7 @@ function Login(props) {
             onClick={renderProps.onClick}
             disabled={renderProps.disabled}
           >
-            SignUp
+            Registarse
           </button>
         )}
       />
@@ -114,7 +119,7 @@ function Login(props) {
             }}
             disabled={renderProps.disabled}
           >
-            Login
+            Acceder
           </button>
         )}
       />

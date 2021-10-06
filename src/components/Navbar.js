@@ -42,6 +42,14 @@ function Nav_bar(props) {
 
   window.addEventListener('resize', showButton);
 
+  const sedes = (
+    <li className="nav-item">
+      <Link to="/sedes" className="nav-links" onClick={closeMobileMenu}>
+        Sedes
+      </Link>
+    </li>
+  );
+
   const cart = (
     <React.Fragment>
       <Link to="/cart">
@@ -62,7 +70,7 @@ function Nav_bar(props) {
   const reportes =
     props.loggedInStatus && props.isAdmin ? (
       <li className="nav-item">
-        <Link to="/services" className="nav-links" onClick={closeMobileMenu}>
+        <Link to="/reportes" className="nav-links" onClick={closeMobileMenu}>
           Reportes
         </Link>
       </li>
@@ -86,7 +94,7 @@ function Nav_bar(props) {
     );
 
   const loginButton = !props.loggedInStatus ? (
-    <button className="Google-login-button">Login</button>
+    <button className="Google-login-button">Iniciar Sesón</button>
   ) : (
     <></>
   );
@@ -104,7 +112,7 @@ function Nav_bar(props) {
         console.log('HOla');
       }}
     >
-      Sign Up
+      Registrarse
     </button>
   ) : (
     <></>
@@ -122,20 +130,21 @@ function Nav_bar(props) {
             <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
           </div>
           <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+            {sedes}
             {gestionUsuarios}
             {reportes}
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link to="/" className="nav-links" onClick={closeMobileMenu}>
-                Home
+                Inicio
               </Link>
-            </li>
+            </li> */}
             <li className="nav-item">
               <Link
                 to="/products"
                 className="nav-links"
                 onClick={closeMobileMenu}
               >
-                Products
+                Productos
               </Link>
             </li>
             <li>
@@ -144,7 +153,7 @@ function Nav_bar(props) {
                 className="nav-links-mobile"
                 onClick={closeMobileMenu}
               >
-                Login
+                Iniciar Sesión
               </Link>
             </li>
           </ul>

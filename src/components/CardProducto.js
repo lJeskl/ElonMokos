@@ -17,7 +17,6 @@ function CardProducto(props) {
   const [cardListName, setCardListName] = useState('');
   const [url, setUrl] = useState('');
   const [eliminarProducts, setEliminarProducts] = useState(false);
-  const [quantity, setquantity] = useState(0);
 
   const addButton =
     props.loggedInStatus && props.isAdmin ? (
@@ -82,9 +81,7 @@ function CardProducto(props) {
           setCards={setCards}
           cards={cards}
           getCards={getCards}
-          quantity={quantity}
           price={card.precio}
-          setquantity={setquantity}
           cartItems={props.cartItems}
           setCartItems={props.setCartItems}
         />
@@ -96,10 +93,6 @@ function CardProducto(props) {
     getCards({});
   }, [cards]);
 
-  console.log(':DDDDDDDDDDDDDDDDDDD');
-  console.log(cards);
-  console.log(match);
-  console.log(props.loggedInStatus);
   return (
     <div className="cards">
       <h1 class="display-1">{match.params.cardListName}</h1>

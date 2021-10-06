@@ -49,7 +49,8 @@ function CardItem(props) {
         setquantity={setquantity}
         cartItems={props.cartItems}
         setCartItems={props.setCartItems}
-        setquantity={props.setquantity}
+        setProductos={() => {}}
+        cbtype={'productos'}
       />
     );
   return (
